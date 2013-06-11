@@ -7,7 +7,12 @@ SEAcret
 
 1. 3 diffrent tools: rectangle, lasso, eraser
 2. 2 styles for hiding information: medain blur & inpaint
-3. use md5 digest of user's password as the key AES
+3. use md5 digest of user's password as the key of AES
+
+##Download
+only available for windows platforms  
+click [here] [3] to download
+  [3]: https://googledrive.com/host/0By9mvBCbgqryVmc4T1dlbHQzdjQ/SEAcret_win32.7z
 
 ## Credits
 1. AES - [xelz's blog] [1]
