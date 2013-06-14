@@ -12,7 +12,7 @@ SEAcret
 ##Download
 only available for windows platforms  
 click [here] [3] to download
-  [3]: https://googledrive.com/host/0By9mvBCbgqryVmc4T1dlbHQzdjQ/SEAcret_win32.7z
+  [3]: https://googledrive.com/host/0By9mvBCbgqryVmc4T1dlbHQzdjQ/SEAcret/SEAcret_win32.7z
 
 ## Credits
 1. AES - [xelz's blog] [1]
