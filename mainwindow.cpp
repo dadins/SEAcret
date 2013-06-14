@@ -82,18 +82,20 @@ void MainWindow::save()
         for (int i = (((mask_buf.size()+15)>>4)<<4) - mask_buf.size(); i > 0; i--)
             mask_buf.push_back(0);
 
-        for (int i = 0; i < mask_buf.size(); i+=16) {
+        for (unsigned int i = 0; i < mask_buf.size(); i+=16) {
             temp = &mask_buf[0]+i;
             aes.Cipher(temp);
         }
 
-        Mat secret = _src.clone();
+        Mat secret;
+        dilate(zone, zone, Mat(7,7,CV_8U,Scalar(1)));
+        _src.copyTo(secret, zone);
         imencode(".jpg", secret, secret_buf);
 
         for (int i = (((secret_buf.size()+15)>>4)<<4) - secret_buf.size(); i > 0; i--)
             secret_buf.push_back(0);
 
-        for (int i = 0; i < secret_buf.size(); i+=16) {
+        for (unsigned int i = 0; i < secret_buf.size(); i+=16) {
             temp = &secret_buf[0]+i;
             aes.Cipher(temp);
         }
