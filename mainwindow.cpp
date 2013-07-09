@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QDropEvent>
+#include <QUrl>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QInputDialog>
@@ -21,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(ui->decryptBtn,SIGNAL(clicked()),this,SLOT(decrypt()));
     connect(ui->actionChange_Median_Blur_Kernel,SIGNAL(triggered()),this,SLOT(setKernel()));
     connect(ui->actionChange_Eraser_Size,SIGNAL(triggered()),this,SLOT(setR()));
+    setAcceptDrops(true);
 
     /* initialization */
     setMode(2); // Lasso
@@ -32,6 +35,38 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::dragEnterEvent(QDragEnterEvent *event)
+{
+    if(event->mimeData()->hasUrls()) {
+        event->acceptProposedAction();
+    }
+}
+
+void MainWindow::dropEvent(QDropEvent *event)
+{
+    QList<QUrl> droppedUrls = event->mimeData()->urls();
+    QString localPath = droppedUrls[0].toLocalFile();
+
+    if (!localPath.endsWith(".png", Qt::CaseInsensitive) && !localPath.endsWith(".jpg", Qt::CaseInsensitive)) {
+        QMessageBox::critical(0, "Error", "Path: "+localPath+"\nThe filetype is not supported!!");
+        return;
+    }
+
+    filename = localPath.toAscii().data();
+    destroyAllWindows();
+    _src = imread(filename);
+    if (!_src.data) {
+        return;
+    }
+    namedWindow("Image", CV_WINDOW_AUTOSIZE);
+    imshow("Image", _src);
+    _dst.release();
+    ui->encryptBtn->setEnabled(true);
+    ui->decryptBtn->setEnabled(true);
+
+    event->acceptProposedAction();
 }
 
 void MainWindow::load()
